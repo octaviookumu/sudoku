@@ -10,6 +10,25 @@ board = [
     [0,4,9,2,0,6,0,0,7]
 ]
 
+
+# The algorithm that will use these functions and backtrack for us
+def solve(bo):
+    find = find_empty(bo)
+    if not find:
+        return True
+    else:
+        row, col = find
+
+    for i in range(1,10): #Loop through the values from 1-9
+        if valid(bo, i, (row, col)): # Check if by adding that number to our board it would be a valid solution
+            bo[row][col] = i # If it's valid we add it into the board
+
+            if solve(bo): # Recursively try to finish the solution by calling solve() on our new board
+                return True
+            bo[row][col] = 0
+
+    return False # If we loop through tht numbers and none of them are valid, we return false
+
 # Find if the current board is valid
 def valid(bo, num, pos):
 
@@ -57,3 +76,9 @@ def find_empty(bo):
             if bo[i][j] == 0:
                 return (i, j) # row, col  # which is a tuple
 
+    return None
+
+print_board(board)
+solve(board)
+print("_________________________")
+print_board(board)
